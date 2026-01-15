@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meus Turnos – TORRE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="logo-wrapper">
+      <img src="logot.png" alt="Logo TORRE">
+    </div>
+
+    <h1>Meus Turnos</h1>
+
+    <label for="telefone">Digite seu telefone</label>
+    <input
+      type="tel"
+      id="telefone"
+      placeholder="Ex: 11987654321"
+    />
+
+    <button onclick="buscarTurnos()">Ver meus turnos</button>
+
+    <div id="mensagem"></div>
+
+    <div id="lista-turnos" class="grade-turnos"></div>
+
+    <div class="aviso-cancelamento">
+      Para cancelar algum turno,<br>
+      entre em contato com <strong>Pedro</strong>:<br>
+      <a href="https://wa.me/5573998702337" target="_blank">
+        WhatsApp: (73) 99870-2337
+      </a>
+    </div>
+
+  </div>
+
+  <script src="turnos.js"></script>
+</body>
+</html>
