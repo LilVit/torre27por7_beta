@@ -218,6 +218,8 @@ function enviarInscricao(turnoId, btn) {
   if (travaEnvio[turnoId]) return;
   travaEnvio[turnoId] = true;
 
+  const msg = document.getElementById("mensagem");
+
   btn.textContent = "Inscrevendo...";
   btn.disabled = true;
 
@@ -235,10 +237,26 @@ function enviarInscricao(turnoId, btn) {
   })
     .then(r => r.json())
     .then(res => {
-      btn.textContent = res.sucesso ? "Inscrito ✓" : res.mensagem;
-      btn.style.background = res.sucesso ? "#2ecc71" : "#c0392b";
+      if (res.sucesso) {
+        btn.textContent = "Inscrito ✓";
+        btn.style.background = "#2ecc71";
+
+        // 🔥 nova mensagem visual
+        msg.textContent = "Inscrição confirmada!";
+        msg.style.color = "green";
+      } else {
+        btn.textContent = res.mensagem;
+        btn.style.background = "#c0392b";
+
+        msg.textContent = res.mensagem;
+        msg.style.color = "red";
+      }
+    })
+    .finally(() => {
+      travaEnvio[turnoId] = false;
     });
 }
+
 
 /* =======================================================
    UTIL
