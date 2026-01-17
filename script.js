@@ -247,3 +247,78 @@ function formatarData(d) {
   const [y, m, day] = d.split("-");
   return `${day}/${m}`;
 }
+
+/* =======================================================
+   MODO MÚLTIPLO — SELECIONAR TURNOS
+======================================================= */
+function toggleTurnoMultiplo(card, turnoId) {
+  const index = turnosSelecionados.indexOf(turnoId);
+
+  if (index === -1) {
+    // adiciona
+    turnosSelecionados.push(turnoId);
+    card.classList.add("selecionado");
+  } else {
+    // remove
+    turnosSelecionados.splice(index, 1);
+    card.classList.remove("selecionado");
+  }
+}
+
+/* =======================================================
+   ENVIO MÚLTIPLO DE INSCRIÇÕES
+======================================================= */
+function enviarInscricoesMultiplas() {
+  if (!turnosSelecionados.length) {
+    alert("Selecione pelo menos um turno.");
+    return;
+  }
+
+  const nomeVal = nome.value;
+  const telefoneVal = telefone.value;
+  const funcaoVal = funcao.value;
+
+  if (!nomeVal || !telefoneVal || !funcaoVal) {
+    alert("Preencha nome, telefone e função.");
+    return;
+  }
+
+  const btn = document.getElementById("btnEnviarMultiplo");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+  }
+
+  const requests = turnosSelecionados.map(turnoId =>
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: nomeVal,
+        telefone: telefoneVal,
+        funcao: funcaoVal,
+        turno_id: turnoId
+      })
+    }).then(r => r.json())
+  );
+
+  Promise.all(requests)
+    .then(respostas => {
+      const falhou = respostas.find(r => !r.sucesso);
+      if (falhou) {
+        alert(falhou.mensagem);
+      } else {
+        alert("Inscrições realizadas com sucesso!");
+        turnosSelecionados = [];
+        document
+          .querySelectorAll(".turno-card.selecionado")
+          .forEach(c => c.classList.remove("selecionado"));
+      }
+    })
+    .finally(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Enviar inscrições";
+      }
+    });
+}
