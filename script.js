@@ -97,15 +97,30 @@ function renderizarInscritos(inscritos = []) {
 
   return inscritos
     .map(p => {
-      const funcaoFormatada = p.funcao.replace(/_/g, " ").toLowerCase();
+      let funcaoFormatada = p.funcao
+        .replace(/_/g, " ")
+        .toLowerCase();
+
+      // 🔥 correções de acentuação (frontend only)
+      const mapaAcentos = {
+        "violao": "violão",
+        "lider musica": "líder de música",
+        "lider oracao": "líder de oração",
+        "cajon": "cajón"
+      };
+
+      funcaoFormatada = mapaAcentos[funcaoFormatada] ?? funcaoFormatada;
+
       return `
         <div class="inscrito">
-          <strong>${p.nome}</strong> - <span>${funcaoFormatada}</span>
+          <strong>${p.nome}</strong>
+          <span class="funcao">– ${funcaoFormatada}</span>
         </div>
       `;
     })
     .join("");
 }
+
 
 /* =======================================================
    CARD HTML
