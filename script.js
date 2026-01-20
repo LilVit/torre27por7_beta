@@ -68,7 +68,7 @@ function carregarTurnos() {
 
         card.innerHTML = gerarConteudoCard(turno, turno.numero_turno);
 
-        const especial = turno.tipo === "abertura" || turno.tipo === "culto";
+        const especial = turno.tipo === "abertura" || turno.tipo === "culto" || turno.tipo === "turno_kids";
         const disponivel = !especial && turno.disponivel_para_funcao === true;
 
         if (disponivel) {
@@ -126,13 +126,15 @@ function renderizarInscritos(inscritos = []) {
    CARD HTML
 ======================================================= */
 function gerarConteudoCard(turno, numero) {
-  const especial = turno.tipo === "abertura" || turno.tipo === "culto";
+  const especial = turno.tipo === "abertura" || turno.tipo === "culto" || turno.tipo === "turno_kids";
 
   const titulo =
     turno.tipo === "abertura"
       ? "Abertura"
       : turno.tipo === "culto"
       ? "Culto"
+      : turno.tipo === "turno_kids"
+      ? "Turno Kids"
       : `Turno ${numero}`;
 
   const inscritosHTML = !especial
@@ -173,7 +175,7 @@ function iniciarAutoUpdate() {
           );
           if (!card) return;
 
-          const especial = turno.tipo === "abertura" || turno.tipo === "culto";
+          const especial = turno.tipo === "abertura" || turno.tipo === "culto" || turno.tipo === "turno_kids";
           const disponivel = !especial && turno.disponivel_para_funcao === true;
 
           const statusDiv = card.querySelector(".turno-status");
